@@ -1,0 +1,169 @@
+<!doctype html>
+<html class="no-js" lang="">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title></title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<link rel="stylesheet" href="css/normalize.min.css">
+		<link rel="stylesheet" href="css/main.css">
+
+		<style>
+			p
+			{
+				position: absolute;
+				left: 0;
+				top: 0;
+				z-index:100;
+
+				margin: 0;
+				background: yellow;
+			}
+
+			svg
+			{
+				width: 700px;
+				height: 500px;
+				background: gray;
+
+				margin: 50px;
+
+	/*			position:fixed;
+				left:0;
+				top:0;
+				margin:0;*/
+			}
+
+			html
+			{
+				height: 2000px;
+			}
+		</style>
+	</head>
+	<body>
+
+		<p id="pl">px box</p>
+		<p id="pg">global px box</p>
+
+		<div id="zsvg">ZSVG</div>
+
+		<script src="zsvg.js"></script>
+
+		<script>
+			var stage = new Stage('zsvg').size(1000, 400);
+
+
+
+
+			var b = stage.createShape('rect', { width:'100%', height:'100%', fill:'white'});
+
+			var g = stage.createShape('g');
+			g.moveTo(100, 100);
+
+			var rect = new Shape('rect', { width:100, height:100 });
+			// var rect = stage.createShape('rect').size(100, height:100 });
+			rect.fill('red');
+
+			console.log('rect be', rect);
+
+			g.append(rect);
+
+			stage.append(g);
+
+
+
+
+			var path = new Path();
+			stage.append(path);
+			path.stroke('red', 40)
+				.pen
+					.moveTo(100, 100)
+					.lineTo(200, 200)
+					.lineBy(-10, 0)
+					.close()
+			path.moveBy(200, 0)
+
+
+
+			g.draggable(true, true);
+
+			var g2 = g.clone();
+			g2.children()[0].fill('green');
+
+			var g3 = g.clone();
+			g3.moveBy(10, 10).children()[0].fill('blue');
+
+			var g4 = g.clone();
+			g4.moveBy(20, 20).children()[0].fill('purple');
+
+			g.sendToFront();
+
+			g2.draggable(true);
+			g3.draggable(true, true);
+
+			// g.rotateBy(1, 50, 50);
+
+			// g.on('click', function() {
+			// 	console.log('you clicka', this);
+			// 	this.sendToBack();
+			// });
+
+			// g2.on('click', function() {
+			// 	console.log('you clicka', this);
+			// 	this.sendToBack();
+			// });
+
+			// g3.on('click', function() {
+			// 	console.log('you clicka', this);
+			// 	this.sendToBack();
+			// });
+
+			// setInterval(function() {
+			// 	rect.rotateBy(1, 50, 50);
+			// }, 10);
+
+
+
+			//background clicking
+			var zsvg = document.getElementById('zsvg');
+			var svg = zsvg.getElementsByTagName('svg')[0];
+
+			svg.addEventListener('click', function() {
+				if(event.target === svg)
+				{
+					console.log('BG CLICK');
+				}
+			})
+
+			svg.addEventListener('mousemove', function(event) {
+				var pxbbox = g2.pxBbox();
+				var p = document.getElementById('pl');
+				p.style.left = pxbbox.x + 'px';
+				p.style.top = pxbbox.y + 'px';
+
+				var pxbbox = g2.globalPxBbox();
+				var p = document.getElementById('pg');
+				p.style.left = pxbbox.x2 + 'px';
+				p.style.top = pxbbox.y2 + 'px';
+				console.log(pxbbox);
+
+				// console.log(event.clientY, event.pageY, event.offsetY);
+
+				//blue
+				p = g3.stage.screenPointToSvgPoint(event.clientX, event.clientY);
+				g3.moveTo(p.x, p.y);
+
+				//green
+				p = g2.stage.pagePointToSvgPoint(event.pageX, event.pageY);
+				g2.moveTo(p.x, p.y);
+
+				//purple
+				p = g4.stage.pxPointToSvgPoint(event.offsetX, event.offsetY);
+				g4.moveTo(p.x, p.y);
+				// console.log(p.x, p.y);
+			});
+		</script>
+	</body>
+</html>

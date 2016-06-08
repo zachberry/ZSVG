@@ -1,0 +1,29 @@
+Bug:
+
+1. Set element draggable, drag it
+2. Rotate element
+3. Drag again - seems to jump that first time
+
+Feature:
+
+Now stage is 'extending' Event. This was a test to get that working - would like to make that work for both stage and shape, and possibly make a better SvgEl base class
+
+Feature:
+
+Have each shape have a width, height and size method. For rect, it's easy, for circle, it would need to modify the radius value instead!
+
+Feature:
+
+be able to call stuff like getShape(element) and it spit back a Rect
+
+Bug:
+
+Right now require that window.ZVG is the namespace, would like to not have that hardcoded
+
+Bug?:
+
+bbox of a tspan not in a text results in 0,0,0,0,0 (should throw error)?
+
+Bug:
+
+MultilineText.clone returns a Text

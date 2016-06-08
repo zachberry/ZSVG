@@ -1,0 +1,114 @@
+<!doctype html>
+<html class="no-js" lang="">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title></title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<link rel="stylesheet" href="css/normalize.min.css">
+		<link rel="stylesheet" href="css/main.css">
+
+		<style>
+			p
+			{
+				position: absolute;
+				left: 0;
+				top: 0;
+				z-index:100;
+
+				margin: 0;
+				background: yellow;
+			}
+
+			svg
+			{
+				width: 700px;
+				height: 500px;
+				background: gray;
+
+				margin: 50px;
+
+	/*			position:fixed;
+				left:0;
+				top:0;
+				margin:0;*/
+			}
+
+			html
+			{
+				height: 2000px;
+			}
+		</style>
+	</head>
+	<body>
+
+		<p id="pl">px box</p>
+		<p id="pg">global px box</p>
+
+		<div id="zsvg">ZSVG</div>
+
+		<script src="zsvg.js"></script>
+
+		<script>
+			var stage = new ZVG.Stage('zsvg').size(200, 100);
+
+			var i = new ZVG.Image();
+			i.attr({width:'100%',height:'100%'});
+			stage.append(i);
+
+			i.src('http://i.imgur.com/sWE4ay8.png');
+
+			var rect = new ZVG.Rect({width:10, height:10});
+			stage.append(rect);
+
+			var circle = new ZVG.Circle({r:10});
+			stage.append(circle);
+
+			var ellipse = new ZVG.Ellipse({rx:20, ry:10});
+			stage.append(ellipse);
+
+			var text = new ZVG.Text();
+			stage.append(text);
+
+			var tspan = new ZVG.TSpan();
+			text.append(tspan);
+			tspan.setText('Howdy There!');
+
+			rect.stroke('red').fill('black', 0);
+			circle.stroke('red').fill('black', 0);
+			ellipse.stroke('red').fill('black', 0);
+			text.fill('white');
+
+			var center = false;
+			stage.on('click', function(event) {
+				center = !center;
+
+				if(center)
+				{
+					rect.moveCenterTo(50,50);
+					circle.moveCenterTo(50,50);
+					ellipse.moveCenterTo(50,50);
+					text.moveCenterTo(50,50);
+				}
+				else
+				{
+					rect.moveTo(50,50);
+					circle.moveTo(50,50);
+					ellipse.moveTo(50,50);
+					text.moveTo(50,50);
+				}
+			})
+
+			rect.moveTo(50,50);
+			circle.moveTo(50,50);
+			ellipse.moveTo(50,50);
+			text.moveTo(50,50);
+
+
+
+
+		</script>
+	</body>
+</html>

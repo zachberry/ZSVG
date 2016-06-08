@@ -1,0 +1,82 @@
+<!doctype html>
+<html class="no-js" lang="">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title></title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<link rel="stylesheet" href="css/normalize.min.css">
+		<link rel="stylesheet" href="css/main.css">
+
+		<style>
+			p
+			{
+				position: absolute;
+				left: 0;
+				top: 0;
+				z-index:100;
+
+				margin: 0;
+				background: yellow;
+			}
+
+			svg
+			{
+				width: 700px;
+				height: 500px;
+				background: gray;
+
+				margin: 50px;
+
+	/*			position:fixed;
+				left:0;
+				top:0;
+				margin:0;*/
+			}
+
+			html
+			{
+				height: 2000px;
+			}
+		</style>
+	</head>
+	<body>
+
+		<p id="pl">px box</p>
+		<p id="pg">global px box</p>
+
+		<div id="zsvg">ZSVG</div>
+
+		<script src="zsvg.js"></script>
+
+		<script>
+			var stage = new ZVG.Stage('zsvg').size(200, 100);
+
+			// var text = new ZVG.Text();
+			// text.attr('font-size', 12).attr('font-family', 'Georgia');
+			// stage.append(text);
+
+			var mlt = new ZVG.MultilineText({'font-size':9}, 'Hello I am a long piece of text\nthat might go to the next line', 100);
+			stage.append(mlt);
+
+			var rect = stage.create('rect', {width:2, height:'100%', fill:'red'});
+
+
+			stage.on('mousemove', function(event) {
+				p = stage.screenPointToSvgPoint(event.clientX, event.clientY);
+
+				if(p.x <= 10) return;
+				console.time('mlt');
+				mlt.setTextWidth(p.x);
+				console.timeEnd('mlt');
+				rect.moveTo(p.x, 0);
+			});
+
+
+
+
+		</script>
+	</body>
+</html>

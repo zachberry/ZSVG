@@ -1,0 +1,104 @@
+<!doctype html>
+<html class="no-js" lang="">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title></title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<link rel="stylesheet" href="css/normalize.min.css">
+		<link rel="stylesheet" href="css/main.css">
+
+		<style>
+			p
+			{
+				position: absolute;
+				left: 0;
+				top: 0;
+				z-index:100;
+
+				margin: 0;
+				background: yellow;
+			}
+
+			svg
+			{
+				width: 700px;
+				height: 500px;
+				background: gray;
+
+				margin: 50px;
+
+	/*			position:fixed;
+				left:0;
+				top:0;
+				margin:0;*/
+			}
+
+			html
+			{
+				height: 2000px;
+			}
+		</style>
+	</head>
+	<body>
+
+		<p id="pl">px box</p>
+		<p id="pg">global px box</p>
+
+		<div id="zsvg">ZSVG</div>
+
+		<script src="zsvg.js"></script>
+
+		<script>
+			var stage = new Stage('zsvg').size(1000, 400);
+
+			var path = new Path();
+			stage.append(path);
+
+			path.stroke('red', 4);
+			// path.pen.moveTo(0, 0);
+
+			var drawing = true;
+
+			document.addEventListener('keydown', function(event) {
+				if(event.shiftKey)
+				{
+					drawing = false;
+				}
+			});
+
+			document.addEventListener('keyup', function(event) {
+				drawing = true;
+
+				if(event.keyCode === 13)
+				{
+					path.pen.clear();
+				}
+
+				if(event.keyCode === 27)
+				{
+					stage.off('mousemove', listener);
+					path.pen.close();
+				}
+			});
+
+			var listener = function(event) {
+				p = stage.pxPointToSvgPoint(event.offsetX, event.offsetY);
+				if(drawing)
+				{
+					path.pen.lineTo(p.x, p.y);
+				}
+				else
+				{
+					path.pen.moveTo(p.x, p.y);
+				}
+			};
+
+			stage.on('mousemove', listener);
+
+			// stage.off('mousemove', listener);
+		</script>
+	</body>
+</html>

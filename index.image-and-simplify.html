@@ -1,0 +1,97 @@
+<!doctype html>
+<html class="no-js" lang="">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title></title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<link rel="stylesheet" href="css/normalize.min.css">
+		<link rel="stylesheet" href="css/main.css">
+
+		<style>
+			p
+			{
+				position: absolute;
+				left: 0;
+				top: 0;
+				z-index:100;
+
+				margin: 0;
+				background: yellow;
+			}
+
+			svg
+			{
+				width: 700px;
+				height: 500px;
+				background: gray;
+
+				margin: 50px;
+
+	/*			position:fixed;
+				left:0;
+				top:0;
+				margin:0;*/
+			}
+
+			html
+			{
+				height: 2000px;
+			}
+		</style>
+	</head>
+	<body>
+
+		<p id="pl">px box</p>
+		<p id="pg">global px box</p>
+
+		<div id="zsvg">ZSVG</div>
+
+		<script src="zsvg.js"></script>
+
+		<script>
+			var stage = new ZVG.Stage('zsvg').size(1000, 400);
+
+			var i = new ZVG.Image();
+			i.attr({width:'100%',height:'100%'});
+			stage.append(i);
+
+			i.src('http://i.imgur.com/sWE4ay8.png');
+
+
+			var p;
+			var path;
+			var drawing = false;
+			var listener = function(event) {
+				if(!drawing) return;
+
+				pt = stage.pxPointToSvgPoint(event.offsetX, event.offsetY);
+				p.pen.lineTo(pt.x, pt.y);
+				path.pen.lineTo(pt.x, pt.y);
+			};
+
+			stage.on('mousedown', function(event) {
+				drawing = true;
+
+				p = new ZVG.Polygon();
+				path = new ZVG.Path();
+				stage.append(p);
+				stage.append(path);
+				p.stroke('red', 10).fill('', 0);
+				path.stroke('white', 10, 0.5).fill('', 0);
+			})
+			stage.on('mouseup', function(event) {
+				p.simplify(5);
+				drawing = false;
+			})
+			stage.on('mousemove', listener);
+
+			stage.on('click', function(event) {
+				p.simplify(5);
+			});
+
+		</script>
+	</body>
+</html>
